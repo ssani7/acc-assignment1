@@ -54,3 +54,7 @@ module.exports.addUser = (req, res) => {
     }
 
 }
+
+module.exports.updateUser = (req, res) => {
+
+}

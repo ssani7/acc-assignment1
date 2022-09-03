@@ -10,20 +10,16 @@ app.use(express.json());
 const allData = JSON.parse(fs.readFileSync('./data.json'));
 
 
-const run = async () => {
-    try {
-        app.get('/', async (req, res) => {
-            res.send("hello");
-            res.end();
-        })
+app.get('/', async (req, res) => {
+    res.send("hello");
+    res.end();
+})
 
-        app.use('/user', userRoute);
-    }
-    finally {
+app.use('/api/v1/user', userRoute);
 
-    }
-}
-run().catch(console.dir);
+app.all("*", (req, res) => {
+    res.send("NO route found!!");
+});
 
 app.listen(port, () => {
     console.log(`server running at ${port}`);

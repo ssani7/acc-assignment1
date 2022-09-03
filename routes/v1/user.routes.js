@@ -42,6 +42,17 @@ router
    */
     .post(addUser)
 
+router
+    .route('/update')
+    /*
+    * @api {get} /user/:option random user
+    * @apiDescription Get random user
+    * @apiPermission all
+    *
+    * @apiSuccess {Object} random user.
+   */
+    .post(addUser)
+
 
 
 module.exports = router;
