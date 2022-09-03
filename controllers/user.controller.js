@@ -3,7 +3,7 @@ const fs = require('fs');
 const allData = JSON.parse(fs.readFileSync('./data.json'));
 
 module.exports.getRandomUser = (req, res) => {
-    const randomNumber = Math.round(Math.random() * 5);
+    const randomNumber = Math.round(Math.random() * 10);
     const randomUser = allData.find(user => user.id === randomNumber)
     res.send(randomUser);
     res.end();
