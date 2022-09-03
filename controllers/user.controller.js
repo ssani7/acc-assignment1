@@ -145,7 +145,8 @@ module.exports.deleteUser = (req, res) => {
                     res.end();
                 }
                 else {
-                    res.send(remaining.sort((a, b) => a.id - b.id));
+                    const newAllData = fs.readFileSync('./data.json')
+                    res.send(newAllData.sort((a, b) => a.id - b.id));
                     res.end();
                 }
             })
