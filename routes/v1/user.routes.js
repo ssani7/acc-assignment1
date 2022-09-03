@@ -1,5 +1,5 @@
 const express = require('express');
-const { getRandomUser, getAllUsers, addUser } = require('../../controllers/user.controller');
+const { getRandomUser, getAllUsers, addUser, updateUser, updateBulk, deleteUser } = require('../../controllers/user.controller');
 
 
 const router = express.Router();
@@ -51,8 +51,29 @@ router
     *
     * @apiSuccess {Object} random user.
    */
-    .post(addUser)
+    .patch(updateUser)
 
+router
+    .route('/bulk-update')
+    /*
+    * @api {get} /user/:option random user
+    * @apiDescription Get random user
+    * @apiPermission all
+    *
+    * @apiSuccess {Object} random user.
+   */
+    .patch(updateBulk)
+
+router
+    .route('/delete')
+    /*
+    * @api {get} /user/:option random user
+    * @apiDescription Get random user
+    * @apiPermission all
+    *
+    * @apiSuccess {Object} random user.
+   */
+    .delete(deleteUser)
 
 
 module.exports = router;
