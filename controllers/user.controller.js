@@ -42,7 +42,7 @@ module.exports.addUser = (req, res) => {
                 res.end();
             }
             else {
-                res.send(newUserList);
+                res.send(fs.readFileSync('./data.json'));
                 res.end();
             }
         });
