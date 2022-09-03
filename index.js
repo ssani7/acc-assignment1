@@ -11,7 +11,7 @@ const allData = JSON.parse(fs.readFileSync('./data.json'));
 
 
 app.get('/', async (req, res) => {
-    res.send("hello");
+    res.send("Welcome to user API");
     res.end();
 })
 

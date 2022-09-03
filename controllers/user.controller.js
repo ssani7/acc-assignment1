@@ -1,8 +1,6 @@
-const { error } = require('console');
 const fs = require('fs');
 
 const allData = JSON.parse(fs.readFileSync('./data.json'));
-
 
 module.exports.getRandomUser = (req, res) => {
     const randomNumber = Math.round(Math.random() * 5);
@@ -15,11 +13,11 @@ module.exports.getAllUsers = (req, res) => {
     const { limit } = req.query;
     if (Number(limit)) {
         const limitedData = allData.slice(0, limit);
-        res.send(limitedData);
+        res.send(limitedData.sort((a, b) => a.id - b.id));
         res.end();
     }
     else {
-        res.send(allData);
+        res.send(allData.sort((a, b) => a.id - b.id));
         res.end();
     }
 }
@@ -72,7 +70,7 @@ module.exports.updateUser = (req, res) => {
                     res.end();
                 }
                 else {
-                    res.send(newUserList);
+                    res.send(updatedUser);
                     res.end();
                 }
             })
@@ -91,10 +89,48 @@ module.exports.updateUser = (req, res) => {
 
 module.exports.updateBulk = (req, res) => {
     const body = req.body;
-    body.forEach(user => {
-        console.log(user.id)
+    let allUsers = [...allData];
+    let users = [];
+
+    if (!(Array.isArray(body)) || body.length === 0) {
+        res.send("Please provide a valid body");
+        res.end();
+        return
+    }
+    body.forEach((u, i) => {
+        if (!(u.id)) {
+            res.send(`Please provide valid id for no. ${i + 1} user`);
+            res.end();
+            return;
+        }
+        else {
+            let user = allData.find(exisUser => exisUser.id === u.id);
+
+            if (!(user?.id)) {
+                res.send(`None of the users have id: ${u.id}`);
+                res.end();
+                return;
+            }
+            else {
+                user = { ...user, ...u };
+                allUsers = allUsers.filter(prev => prev.id !== u.id)
+                users.push(user);
+            }
+        }
+    });
+    const newUserList = [...allUsers, ...users];
+
+    fs.writeFile('data.json', JSON.stringify(newUserList), (error) => {
+        if (error) {
+            res.send("Server Error. Could not update");
+            res.end();
+        }
+        else {
+            res.send(users.sort((a, b) => a.id - b.id));
+            res.end();
+        }
     })
-    res.end();
+
 }
 
 module.exports.deleteUser = (req, res) => {
@@ -109,7 +145,7 @@ module.exports.deleteUser = (req, res) => {
                     res.end();
                 }
                 else {
-                    res.send(remaining);
+                    res.send(remaining.sort((a, b) => a.id - b.id));
                     res.end();
                 }
             })
