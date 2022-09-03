@@ -36,7 +36,7 @@ module.exports.addUser = (req, res) => {
         }
 
         const newUserList = [...allData, updateDoc];
-        fs.writeFile('data.json', JSON.stringify(newUserList), (writeError) => {
+        fs.writeFile('./data.json', JSON.stringify(newUserList), (writeError) => {
             if (writeError) {
                 res.send("Server Error. Could not update");
                 res.end();
